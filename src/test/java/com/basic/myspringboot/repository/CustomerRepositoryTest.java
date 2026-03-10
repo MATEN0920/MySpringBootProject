@@ -36,7 +36,7 @@ class CustomerRepositoryTest {
         assertThat(addCustomer.getCustomerName()).isEqualTo("스프링부트4");
     }
 
-    // 2. Customer 조회
+    //2. Customer 조회
     @Test
     void testFindBy() {
         Optional<Customer> optionalCustomer = customerRepository.findById(1L);
@@ -46,14 +46,22 @@ class CustomerRepositoryTest {
         }else{
             System.out.println("Customer Not Found");
         }
-        // ifPresent(Consumer)
-        // Consumer의 추상메서드는 void accept(T t)
+        //ifPresent(Consumer)
+        //Consumer의 추상메서드는 void accept(T t)
         optionalCustomer.ifPresent(customer -> System.out.println(customer.getCustomerName()));
 
+    }
+
+    @Test
+    void testFindByNotFound() {
         //orElseGet(Supplier)
         //Supplier의 추상메서드는 T get()
-        Customer existCustomer = optionalCustomer.orElseGet(() -> new Customer());
-        assertThat(existCustomer.getId()).isEqualTo(1L);
+        Customer existCustomer = customerRepository.findById(2L).orElseGet(() -> new Customer());
+        assertThat(existCustomer.getId()).isNull();
+        //assertThat(existCustomer.getId()).isEqualTo(2L);
+
+        Customer notFoundCustomer = customerRepository.findById(3L).orElseThrow(() -> new RuntimeException("Customer Not Found"));
+
 
     }
 }
