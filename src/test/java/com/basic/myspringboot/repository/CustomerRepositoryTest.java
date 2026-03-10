@@ -22,7 +22,7 @@ class CustomerRepositoryTest {
 
     //1. Customer 등록
     @Test
-    @Rollback(value = false)    // Rollback 처리를 하지 마세요
+    @Rollback(value = false)  //Rollback 처리를 하지 마세요
     @Disabled
     void testCreate() {
         //Given(준비단계)
@@ -53,15 +53,28 @@ class CustomerRepositoryTest {
     }
 
     @Test
+    @Disabled
     void testFindByNotFound() {
         //orElseGet(Supplier)
         //Supplier의 추상메서드는 T get()
-        Customer existCustomer = customerRepository.findById(2L).orElseGet(() -> new Customer());
+        Customer existCustomer = customerRepository.findById(2L)
+                .orElseGet(() -> new Customer());
         assertThat(existCustomer.getId()).isNull();
         //assertThat(existCustomer.getId()).isEqualTo(2L);
 
-        Customer notFoundCustomer = customerRepository.findById(3L).orElseThrow(() -> new RuntimeException("Customer Not Found"));
+        //public <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier)
+        Customer notFoundCustomer = customerRepository.findById(2L)
+                .orElseThrow(() -> new RuntimeException("Customer Not Found"));
+    }
 
-
+    @Test
+    @Rollback(value = false)
+    void testUpdate() {
+        //조회를 하고 setter 호출하면 업데이트 됨
+        Customer customer = customerRepository.findByCustomerId("A002")
+                .orElseThrow(() -> new RuntimeException("Customer Not Found"));
+        customer.setCustomerName("스프링부트2");
+        //customerRepository.save(customer);
+        assertThat(customer.getCustomerName()).isEqualTo("스프링부트2");
     }
 }
