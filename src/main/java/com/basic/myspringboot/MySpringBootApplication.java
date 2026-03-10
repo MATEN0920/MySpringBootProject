@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class MySpringBootApplication {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
 //        SpringApplication.run(MySpringBootApplication.class, args);
         SpringApplication application = new SpringApplication(MySpringBootApplication.class);
@@ -16,7 +16,7 @@ public class MySpringBootApplication {
         application.setWebApplicationType(WebApplicationType.SERVLET);
         application.run(args);
 
-    }
+	}
 
     @Bean
     public String hello() {
