@@ -47,11 +47,10 @@ public class UserRestController {
 
     //Email 조회하고 수정하기
     @PatchMapping("/{email}/")
-    public User updateUser(@PathVariable String email, @RequestBody User userDetail) {
-        userRepository.findByEmail(email).
-                orElseThrow(() -> new BusinessException("User Not Found", HttpStatus.NOT_FOUND));
+    public User updateUser(@PathVariable String email, @RequestBody User userDetail){
+        User existUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException("User Not Found", HttpStatus.NOT_FOUND));
         existUser.setName(userDetail.getName());
         return userRepository.save(existUser);
-        ;
     }
 }
